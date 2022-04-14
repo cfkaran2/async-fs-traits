@@ -1,0 +1,29 @@
+# See more keys and their definitions at
+# https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[package]
+name = "async-fs-traits"
+version = "0.1.0"
+authors = ["Cem Karan <cfkaran2@gmail.com>"]
+edition = "2021"
+rust-version = "1.60"
+description = "A collection of generic traits for implementing async filesystem operations."
+readme = "README.md"
+# homepage =
+repository = "https://github.com/cfkaran2/async-fs-traits"
+documentation = "https://docs.rs/async-fs-traits/"
+license = "Apache-2.0"
+keywords = ["concurrent", "async"]
+categories = ["asynchronous", "concurrency", "traits"]
+
+[dependencies]
+async-trait = {version = "^0.1"}
+async-lock = "2.3.0"
+blocking = "1.0.0"
+futures-lite = "1.2.0"
+
+[target.'cfg(unix)'.dev-dependencies]
+libc = "0.2.78"
+
+[target.'cfg(windows)'.dev-dependencies]
+winapi = { version = "0.3.9", features = ["winbase"] }
