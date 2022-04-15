@@ -1,8 +1,6 @@
 //! TODO: Fill this in
 
 pub use std::fs::{FileType, Metadata, Permissions};
-#[cfg(windows)]
-use std::os::windows::fs::OpenOptionsExt as _;
 use std::{
     fmt,
     io::{self, SeekFrom},

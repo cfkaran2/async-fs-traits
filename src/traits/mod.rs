@@ -14,7 +14,7 @@ pub use async_fs_trait::*;
 pub use dir_builder::*;
 pub use dir_entry::*;
 pub use file::*;
+pub use open_options::*;
 pub use read_dir::*;
 pub use unix::*;
 pub use windows::*;
-pub use open_options::*;

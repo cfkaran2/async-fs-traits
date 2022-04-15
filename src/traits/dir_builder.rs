@@ -12,8 +12,8 @@ use blocking::unblock;
 
 /// A builder for creating directories with configurable options.
 ///
-/// For Unix-specific options, import the [`DirBuilderExt`][`std::os::unix::fs::DirBuilderExt`]
-/// trait.
+/// For Unix-specific options, import the
+/// [`DirBuilderExt`][`std::os::unix::fs::DirBuilderExt`] trait.
 #[derive(Debug, Default)]
 pub struct DirBuilder {
     /// Set to `true` if non-existent parent directories should be created.
@@ -27,7 +27,8 @@ pub struct DirBuilder {
 impl DirBuilder {
     /// Creates a blank set of options.
     ///
-    /// The [`recursive()`][`DirBuilder::recursive()`] option is initially set to `false`.
+    /// The [`recursive()`][`DirBuilder::recursive()`] option is initially set
+    /// to `false`.
     ///
     /// # Examples
     ///
@@ -49,8 +50,9 @@ impl DirBuilder {
 
     /// Sets the option for recursive mode.
     ///
-    /// When set to `true`, this option means all parent directories should be created recursively
-    /// if they don't exist. Parents are created with the same permissions as the final directory.
+    /// When set to `true`, this option means all parent directories should be
+    /// created recursively if they don't exist. Parents are created with the
+    /// same permissions as the final directory.
     ///
     /// This option is initially set to `false`.
     ///
@@ -69,14 +71,16 @@ impl DirBuilder {
 
     /// Creates a directory with the configured options.
     ///
-    /// It is considered an error if the directory already exists unless recursive mode is enabled.
+    /// It is considered an error if the directory already exists unless
+    /// recursive mode is enabled.
     ///
     /// # Errors
     ///
     /// An error will be returned in the following situations:
     ///
     /// * `path` already points to an existing file or directory.
-    /// * The current process lacks permissions to create the directory or its missing parents.
+    /// * The current process lacks permissions to create the directory or its
+    ///   missing parents.
     /// * Some other I/O error occurred.
     ///
     /// # Examples

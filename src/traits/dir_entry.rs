@@ -16,7 +16,8 @@ use blocking::unblock;
 ///
 /// A stream of entries in a directory is returned by [`read_dir()`].
 ///
-/// For Unix-specific options, import the [`DirEntryExt`][`std::os::unix::fs::DirEntryExt`] trait.
+/// For Unix-specific options, import the
+/// [`DirEntryExt`][`std::os::unix::fs::DirEntryExt`] trait.
 pub struct DirEntry(Arc<std::fs::DirEntry>);
 
 impl DirEntry {
@@ -27,8 +28,8 @@ impl DirEntry {
 
     /// Returns the full path to this entry.
     ///
-    /// The full path is created by joining the original path passed to [`read_dir()`] with the
-    /// name of this entry.
+    /// The full path is created by joining the original path passed to
+    /// [`read_dir()`] with the name of this entry.
     ///
     /// # Examples
     ///
@@ -51,8 +52,8 @@ impl DirEntry {
     ///
     /// This function will traverse symbolic links to read the metadata.
     ///
-    /// If you want to read metadata without following symbolic links, use [`symlink_metadata()`]
-    /// instead.
+    /// If you want to read metadata without following symbolic links, use
+    /// [`symlink_metadata()`] instead.
     ///
     /// # Errors
     ///
@@ -82,9 +83,11 @@ impl DirEntry {
 
     /// Reads the file type for this entry.
     ///
-    /// This function will not traverse symbolic links if this entry points at one.
+    /// This function will not traverse symbolic links if this entry points at
+    /// one.
     ///
-    /// If you want to read metadata with following symbolic links, use [`metadata()`] instead.
+    /// If you want to read metadata with following symbolic links, use
+    /// [`metadata()`] instead.
     ///
     /// # Errors
     ///

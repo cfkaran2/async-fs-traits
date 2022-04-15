@@ -92,8 +92,8 @@ pub mod windows {
         /// use async_fs::{windows::OpenOptionsExt, OpenOptions};
         ///
         /// # futures_lite::future::block_on(async {
-        /// // Open without read and write permission, for example if you only need
-        /// // to call `stat` on the file
+        /// // Open without read and write permission, for example if you only
+        /// // need to call `stat` on the file
         /// let file = OpenOptions::new().access_mode(0).open("foo.txt").await?;
         /// # std::io::Result::Ok(()) });
         /// ```

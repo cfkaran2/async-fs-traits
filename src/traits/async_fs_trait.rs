@@ -2,8 +2,6 @@
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
-#[cfg(windows)]
-use std::os::windows::fs::OpenOptionsExt as _;
 use std::{
     io::{self},
     path::{Path, PathBuf}

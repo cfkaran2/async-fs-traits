@@ -1,8 +1,6 @@
 //! TODO: Fill this in
 
 pub use std::fs::{FileType, Metadata, Permissions};
-#[cfg(windows)]
-use std::os::windows::fs::OpenOptionsExt as _;
 use std::{
     fmt,
     io::{self},
@@ -18,7 +16,8 @@ use crate::DirEntry;
 
 /// The state of an asynchronous `ReadDir`.
 ///
-/// The `ReadDir` can be either idle or busy performing an asynchronous operation.
+/// The `ReadDir` can be either idle or busy performing an asynchronous
+/// operation.
 enum State {
     Idle(Option<std::fs::ReadDir>),
     Busy(future::Boxed<(std::fs::ReadDir,
@@ -28,8 +27,8 @@ enum State {
 /// A stream of entries in a directory.
 ///
 /// This stream is returned by [`read_dir()`] and yields items of type
-/// [`io::Result`]`<`[`DirEntry`]`>`. Each [`DirEntry`] can then retrieve information like entry's
-/// path or metadata.
+/// [`io::Result`]`<`[`DirEntry`]`>`. Each [`DirEntry`] can then retrieve
+/// information like entry's path or metadata.
 pub struct ReadDir(State);
 
 impl fmt::Debug for ReadDir {

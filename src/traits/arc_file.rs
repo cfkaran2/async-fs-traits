@@ -2,14 +2,13 @@
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
-#[cfg(windows)]
-use std::os::windows::fs::OpenOptionsExt as _;
 use std::{
     io::{self, SeekFrom},
     sync::Arc
 };
 
-/// A wrapper around `Arc<std::fs::File>` that implements `Read`, `Write`, and `Seek`.
+/// A wrapper around `Arc<std::fs::File>` that implements `Read`, `Write`, and
+/// `Seek`.
 pub(crate) struct ArcFile(Arc<std::fs::File>);
 
 impl ArcFile {
