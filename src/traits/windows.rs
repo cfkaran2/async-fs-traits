@@ -39,14 +39,6 @@ pub mod windows {
     ///
     /// The `dst` path will be a directory symbolic link pointing to the `src`
     /// path.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::windows::symlink_dir("a", "b").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     pub async fn symlink_dir<P: AsRef<Path>, Q: AsRef<Path>>(
         src: P,
         dst: Q)
@@ -59,14 +51,6 @@ pub mod windows {
     /// Creates a new file symbolic link on the filesystem.
     ///
     /// The `dst` path will be a file symbolic link pointing to the `src` path.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::windows::symlink_file("a.txt", "b.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     pub async fn symlink_file<P: AsRef<Path>, Q: AsRef<Path>>(
         src: P,
         dst: Q)
@@ -86,18 +70,6 @@ pub mod windows {
         /// control over the permissions to read, write and append data,
         /// attributes (like hidden and system), and extended attributes.
         ///
-        /// # Examples
-        ///
-        /// ```no_run
-        /// use async_fs::{windows::OpenOptionsExt, OpenOptions};
-        ///
-        /// # futures_lite::future::block_on(async {
-        /// // Open without read and write permission, for example if you only
-        /// // need to call `stat` on the file
-        /// let file = OpenOptions::new().access_mode(0).open("foo.txt").await?;
-        /// # std::io::Result::Ok(()) });
-        /// ```
-        ///
         /// [`CreateFile`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
         fn access_mode(&mut self, access: u32) -> &mut Self;
 
@@ -111,21 +83,6 @@ pub mod windows {
         /// performing the corresponding operation until the file handle is
         /// closed.
         ///
-        /// # Examples
-        ///
-        /// ```no_run
-        /// use async_fs::{windows::OpenOptionsExt, OpenOptions};
-        ///
-        /// # futures_lite::future::block_on(async {
-        /// // Do not allow others to read or modify this file while we have it
-        /// // open for writing.
-        /// let file = OpenOptions::new().write(true)
-        ///                              .share_mode(0)
-        ///                              .open("foo.txt")
-        ///                              .await?;
-        /// # std::io::Result::Ok(()) });
-        /// ```
-        ///
         /// [`CreateFile`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
         fn share_mode(&mut self, val: u32) -> &mut Self;
 
@@ -136,21 +93,6 @@ pub mod windows {
         ///
         /// Custom flags can only set flags, not remove flags set by Rust's
         /// options. This option overwrites any previously set custom flags.
-        ///
-        /// # Examples
-        ///
-        /// ```no_run
-        /// use async_fs::{windows::OpenOptionsExt, OpenOptions};
-        ///
-        /// # futures_lite::future::block_on(async {
-        /// let file = OpenOptions::new()
-        ///     .create(true)
-        ///     .write(true)
-        ///     .custom_flags(winapi::um::winbase::FILE_FLAG_DELETE_ON_CLOSE)
-        ///     .open("foo.txt")
-        ///     .await?;
-        /// # std::io::Result::Ok(()) });
-        /// ```
         ///
         /// [`CreateFile`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
         /// [`CreateFile2`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile2
@@ -170,21 +112,6 @@ pub mod windows {
         /// the ones declared with `.attributes()`.
         ///
         /// In all other cases the attributes get ignored.
-        ///
-        /// # Examples
-        ///
-        /// ```no_run
-        /// use async_fs::{windows::OpenOptionsExt, OpenOptions};
-        ///
-        /// # futures_lite::future::block_on(async {
-        /// let file =
-        ///     OpenOptions::new().write(true)
-        ///                       .create(true)
-        ///                       .attributes(winapi::um::winnt::FILE_ATTRIBUTE_HIDDEN)
-        ///                       .open("foo.txt")
-        ///                       .await?;
-        /// # std::io::Result::Ok(()) });
-        /// ```
         ///
         /// [`CreateFile`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
         /// [`CreateFile2`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile2
@@ -210,21 +137,6 @@ pub mod windows {
         /// For information about possible values, see [Impersonation Levels] on
         /// the Windows Dev Center site. The `SECURITY_SQOS_PRESENT` flag is
         /// set automatically when using this method.
-        ///
-        /// # Examples
-        ///
-        /// ```no_run
-        /// use async_fs::{windows::OpenOptionsExt, OpenOptions};
-        ///
-        /// # futures_lite::future::block_on(async {
-        /// let file = OpenOptions::new()
-        ///     .write(true)
-        ///     .create(true)
-        ///     .security_qos_flags(winapi::um::winbase::SECURITY_IDENTIFICATION)
-        ///     .open(r"\\.\pipe\MyPipe")
-        ///     .await?;
-        /// # std::io::Result::Ok(()) });
-        /// ```
         ///
         /// [`CreateFile`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
         /// [`CreateFile2`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfile2

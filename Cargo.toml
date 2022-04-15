@@ -18,12 +18,4 @@ categories = ["asynchronous", "concurrency", "traits"]
 
 [dependencies]
 async-trait = {version = "^0.1"}
-async-lock = "2.3.0"
-blocking = "1.0.0"
 futures-lite = "1.2.0"
-
-[target.'cfg(unix)'.dev-dependencies]
-libc = "0.2.78"
-
-[target.'cfg(windows)'.dev-dependencies]
-winapi = { version = "0.3.9", features = ["winbase"] }

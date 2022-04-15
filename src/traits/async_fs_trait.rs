@@ -9,6 +9,8 @@ use std::{
 
 use async_trait::async_trait;
 
+#[doc(no_inline)]
+use crate::DirEntry;
 use crate::ReadDir;
 
 /// TODO: Fill this in
@@ -26,14 +28,6 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * A non-final component in `path` is not a directory.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let path = async_fs::canonicalize(".").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf>;
 
     /// Copies a file to a new location.
@@ -55,14 +49,6 @@ pub trait AsyncFsTrait {
     /// * `src` does not point to an existing file.
     /// * The current process lacks permissions to read `src` or write `dst`.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let num_bytes = async_fs::copy("a.txt", "b.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn copy<P: AsRef<Path>, Q: AsRef<Path>>(src: P,
                                                   dst: Q)
                                                   -> io::Result<u64>;
@@ -81,14 +67,6 @@ pub trait AsyncFsTrait {
     /// * A parent directory in `path` does not exist.
     /// * The current process lacks permissions to create the directory.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::create_dir("./some/directory").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn create_dir<P: AsRef<Path>>(path: P) -> io::Result<()>;
 
     /// Creates a directory and its parent directories if they are missing.
@@ -101,14 +79,6 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to create the directory or its
     ///   missing parents.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::create_dir_all("./some/directory").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn create_dir_all<P: AsRef<Path>>(path: P) -> io::Result<()>;
 
     /// Creates a hard link on the filesystem.
@@ -123,14 +93,6 @@ pub trait AsyncFsTrait {
     ///
     /// * `src` does not point to an existing file.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::hard_link("a.txt", "b.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn hard_link<P: AsRef<Path>, Q: AsRef<Path>>(src: P,
                                                        dst: Q)
                                                        -> io::Result<()>;
@@ -148,14 +110,6 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let perm = async_fs::metadata("a.txt").await?.permissions();
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn metadata<P: AsRef<Path>>(path: P) -> io::Result<Metadata>;
 
     /// Reads the entire contents of a file as raw bytes.
@@ -174,14 +128,6 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file.
     /// * The current process lacks permissions to read the file.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let contents = async_fs::read("a.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn read<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>>;
 
     /// Returns a stream of entries in a directory.
@@ -197,21 +143,9 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to read the contents of the
     ///   directory.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// use futures_lite::stream::StreamExt;
-    ///
-    /// let mut entries = async_fs::read_dir(".").await?;
-    ///
-    /// while let Some(entry) = entries.try_next().await? {
-    ///     println!("{}", entry.file_name().to_string_lossy());
-    /// }
-    /// # std::io::Result::Ok(()) });
-    /// ```
-    async fn read_dir<P: AsRef<Path>>(path: P) -> io::Result<ReadDir>;
+    async fn read_dir<P: AsRef<Path>, T, U>(path: P) -> io::Result<T>
+        where T: ReadDir<U>,
+              U: DirEntry;
 
     /// Reads a symbolic link and returns the path it points to.
     ///
@@ -221,14 +155,6 @@ pub trait AsyncFsTrait {
     ///
     /// * `path` does not point to an existing link.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let path = async_fs::read_link("a.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn read_link<P: AsRef<Path>>(path: P) -> io::Result<PathBuf>;
 
     /// Reads the entire contents of a file as a string.
@@ -247,14 +173,6 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to read the file.
     /// * The contents of the file cannot be read as a UTF-8 string.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let contents = async_fs::read_to_string("a.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String>;
 
     /// Removes an empty directory.
@@ -270,14 +188,6 @@ pub trait AsyncFsTrait {
     /// * `path` is not an existing and empty directory.
     /// * The current process lacks permissions to remove the directory.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::remove_dir("./some/directory").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn remove_dir<P: AsRef<Path>>(path: P) -> io::Result<()>;
 
     /// Removes a directory and all of its contents.
@@ -289,14 +199,6 @@ pub trait AsyncFsTrait {
     /// * `path` is not an existing and empty directory.
     /// * The current process lacks permissions to remove the directory.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::remove_dir_all("./some/directory").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn remove_dir_all<P: AsRef<Path>>(path: P) -> io::Result<()>;
 
     /// Removes a file.
@@ -308,14 +210,6 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file.
     /// * The current process lacks permissions to remove the file.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::remove_file("a.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn remove_file<P: AsRef<Path>>(path: P) -> io::Result<()>;
 
     /// Renames a file or directory to a new location.
@@ -331,14 +225,6 @@ pub trait AsyncFsTrait {
     /// * `src` and `dst` are on different filesystems.
     /// * The current process lacks permissions to do the rename operation.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::rename("a.txt", "b.txt").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn rename<P: AsRef<Path>, Q: AsRef<Path>>(src: P,
                                                     dst: Q)
                                                     -> io::Result<()>;
@@ -353,16 +239,6 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to change attributes on the
     ///   file or directory.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let mut perm = async_fs::metadata("a.txt").await?.permissions();
-    /// perm.set_readonly(true);
-    /// async_fs::set_permissions("a.txt", perm).await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn set_permissions<P: AsRef<Path>>(path: P,
                                              perm: Permissions)
                                              -> io::Result<()>;
@@ -379,14 +255,6 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// let perm = async_fs::symlink_metadata("a.txt").await?.permissions();
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn symlink_metadata<P: AsRef<Path>>(path: P) -> io::Result<Metadata>;
 
     /// Writes a slice of bytes as the new contents of a file.
@@ -401,14 +269,6 @@ pub trait AsyncFsTrait {
     /// * The file's parent directory does not exist.
     /// * The current process lacks permissions to write to the file.
     /// * Some other I/O error occurred.
-    ///
-    /// # Examples
-    ///
-    /// ```no_run
-    /// # futures_lite::future::block_on(async {
-    /// async_fs::write("a.txt", b"Hello world!").await?;
-    /// # std::io::Result::Ok(()) });
-    /// ```
     async fn write<P: AsRef<Path>, C: AsRef<[u8]>>(path: P,
                                                    contents: C)
                                                    -> io::Result<()>;
