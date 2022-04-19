@@ -4,7 +4,7 @@ pub mod async_dir_builder_trait;
 pub mod async_dir_entry_trait;
 pub mod async_file_trait;
 pub mod async_fs_trait;
-pub(crate) mod async_open_options_trait;
+pub mod async_open_options_trait;
 pub mod async_read_dir_trait;
 // pub mod unix;
 // pub mod windows;
