@@ -5,7 +5,7 @@
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
-use std::{future::Future, io, path::Path};
+use std::{io, path::Path};
 
 use async_trait::async_trait;
 
@@ -28,7 +28,8 @@ pub trait AsyncDirBuilderTrait:
     /// same permissions as the final directory.
     ///
     /// This option is initially set to `false`.
-    async fn recursive(&mut self, recursive: bool) -> &mut Self;
+    async fn recursive<T>(self, recursive: bool) -> T
+        where T: AsyncDirBuilderTrait;
 
     /// Creates a directory with the configured options.
     ///
@@ -43,7 +44,7 @@ pub trait AsyncDirBuilderTrait:
     /// * The current process lacks permissions to create the directory or its
     ///   missing parents.
     /// * Some other I/O error occurred.
-    async fn create<P>(&self, path: P) -> dyn Future<Output = io::Result<()>>
+    async fn create<P>(self, path: P) -> io::Result<()>
         where P: AsRef<Path>;
 }
 

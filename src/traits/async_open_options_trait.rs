@@ -34,7 +34,8 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     ///
     /// When set to `true`, this option means the file will be readable after
     /// opening.
-    async fn read(&mut self, read: bool) -> &mut Self;
+    async fn read<T>(self, read: bool) -> T
+        where T: AsyncOpenOptionsTrait;
 
     /// Configures the option for write mode.
     ///
@@ -43,14 +44,16 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     ///
     /// If the file already exists, write calls on it will overwrite the
     /// previous contents without truncating it.
-    async fn write(&mut self, write: bool) -> &mut Self;
+    async fn write<T>(self, write: bool) -> T
+        where T: AsyncOpenOptionsTrait;
 
     /// Configures the option for append mode.
     ///
     /// When set to `true`, this option means the file will be writable after
     /// opening and the file cursor will be moved to the end of file before
     /// every write operation.
-    async fn append(&mut self, append: bool) -> &mut Self;
+    async fn append<T>(self, append: bool) -> T
+        where T: AsyncOpenOptionsTrait;
 
     /// Configures the option for truncating the previous file.
     ///
@@ -59,7 +62,8 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     /// The file must be opened in [`write`][`AsyncOpenOptionsTrait::write()`]
     /// or [`append`][`AsyncOpenOptionsTrait::append()`] mode for truncation to
     /// work.
-    async fn truncate(&mut self, truncate: bool) -> &mut Self;
+    async fn truncate<T>(self, truncate: bool) -> T
+        where T: AsyncOpenOptionsTrait;
 
     /// Configures the option for creating a new file if it doesn't exist.
     ///
@@ -69,7 +73,8 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     /// The file must be opened in [`write`][`AsyncOpenOptionsTrait::write()`]
     /// or [`append`][`AsyncOpenOptionsTrait::append()`] mode for file creation
     /// to work.
-    async fn create(&mut self, create: bool) -> &mut Self;
+    async fn create<T>(self, create: bool) -> T
+        where T: AsyncOpenOptionsTrait;
 
     /// Configures the option for creating a new file or failing if it already
     /// exists.
@@ -80,7 +85,8 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     /// The file must be opened in [`write`][`AsyncOpenOptionsTrait::write()`]
     /// or [`append`][`AsyncOpenOptionsTrait::append()`] mode for file creation
     /// to work.
-    async fn create_new(&mut self, create_new: bool) -> &mut Self;
+    async fn create_new<T>(self, create_new: bool) -> T
+        where T: AsyncOpenOptionsTrait;
 
     /// Opens a file with the configured options.
     ///
@@ -107,7 +113,7 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     /// [`truncate`]: `AsyncOpenOptionsTrait::truncate()`
     /// [`create`]: `AsyncOpenOptionsTrait::create()`
     /// [`create_new`]: `AsyncOpenOptionsTrait::create_new()`
-    async fn open<P, T>(&self, path: P) -> dyn Future<Output = io::Result<T>>
+    async fn open<P, T>(self, path: P) -> dyn Future<Output = io::Result<T>>
         where P: AsRef<Path>,
               T: AsyncFileTrait;
 }
