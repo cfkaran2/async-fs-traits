@@ -3,7 +3,7 @@
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
 use std::{
-    io::{self},
+    io,
     path::{Path, PathBuf}
 };
 
@@ -28,7 +28,8 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * A non-final component in `path` is not a directory.
     /// * Some other I/O error occurred.
-    async fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf>;
+    async fn canonicalize<P>(path: P) -> io::Result<PathBuf>
+        where P: AsRef<Path>;
 
     /// Copies a file to a new location.
     ///
@@ -49,9 +50,9 @@ pub trait AsyncFsTrait {
     /// * `src` does not point to an existing file.
     /// * The current process lacks permissions to read `src` or write `dst`.
     /// * Some other I/O error occurred.
-    async fn copy<P: AsRef<Path>, Q: AsRef<Path>>(src: P,
-                                                  dst: Q)
-                                                  -> io::Result<u64>;
+    async fn copy<P, Q>(src: P, dst: Q) -> io::Result<u64>
+        where P: AsRef<Path>,
+              Q: AsRef<Path>;
 
     /// Creates a directory.
     ///
@@ -67,7 +68,8 @@ pub trait AsyncFsTrait {
     /// * A parent directory in `path` does not exist.
     /// * The current process lacks permissions to create the directory.
     /// * Some other I/O error occurred.
-    async fn create_dir<P: AsRef<Path>>(path: P) -> io::Result<()>;
+    async fn create_dir<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
 
     /// Creates a directory and its parent directories if they are missing.
     ///
@@ -79,7 +81,8 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to create the directory or its
     ///   missing parents.
     /// * Some other I/O error occurred.
-    async fn create_dir_all<P: AsRef<Path>>(path: P) -> io::Result<()>;
+    async fn create_dir_all<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
 
     /// Creates a hard link on the filesystem.
     ///
@@ -93,9 +96,9 @@ pub trait AsyncFsTrait {
     ///
     /// * `src` does not point to an existing file.
     /// * Some other I/O error occurred.
-    async fn hard_link<P: AsRef<Path>, Q: AsRef<Path>>(src: P,
-                                                       dst: Q)
-                                                       -> io::Result<()>;
+    async fn hard_link<P, Q>(src: P, dst: Q) -> io::Result<()>
+        where P: AsRef<Path>,
+              Q: AsRef<Path>;
 
     /// Reads metadata for a path.
     ///
@@ -110,7 +113,8 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
-    async fn metadata<P: AsRef<Path>>(path: P) -> io::Result<Metadata>;
+    async fn metadata<P>(path: P) -> io::Result<Metadata>
+        where P: AsRef<Path>;
 
     /// Reads the entire contents of a file as raw bytes.
     ///
@@ -128,12 +132,14 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file.
     /// * The current process lacks permissions to read the file.
     /// * Some other I/O error occurred.
-    async fn read<P: AsRef<Path>>(path: P) -> io::Result<Vec<u8>>;
+    async fn read<P>(path: P) -> io::Result<Vec<u8>>
+        where P: AsRef<Path>;
 
     /// Returns a stream of entries in a directory.
     ///
-    /// The stream yields items of type [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Note
-    /// that I/O errors can occur while reading from the stream.
+    /// The stream yields items of type
+    /// [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Note that I/O errors can
+    /// occur while reading from the stream.
     ///
     /// # Errors
     ///
@@ -143,8 +149,9 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to read the contents of the
     ///   directory.
     /// * Some other I/O error occurred.
-    async fn read_dir<P: AsRef<Path>, T, U>(path: P) -> io::Result<T>
-        where T: AsyncReadDirTrait<U>,
+    async fn read_dir<P, T, U>(path: P) -> io::Result<T>
+        where P: AsRef<Path>,
+              T: AsyncReadDirTrait<U>,
               U: AsyncDirEntryTrait;
 
     /// Reads a symbolic link and returns the path it points to.
@@ -155,7 +162,8 @@ pub trait AsyncFsTrait {
     ///
     /// * `path` does not point to an existing link.
     /// * Some other I/O error occurred.
-    async fn read_link<P: AsRef<Path>>(path: P) -> io::Result<PathBuf>;
+    async fn read_link<P>(path: P) -> io::Result<PathBuf>
+        where P: AsRef<Path>;
 
     /// Reads the entire contents of a file as a string.
     ///
@@ -173,7 +181,8 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to read the file.
     /// * The contents of the file cannot be read as a UTF-8 string.
     /// * Some other I/O error occurred.
-    async fn read_to_string<P: AsRef<Path>>(path: P) -> io::Result<String>;
+    async fn read_to_string<P>(path: P) -> io::Result<String>
+        where P: AsRef<Path>;
 
     /// Removes an empty directory.
     ///
@@ -188,7 +197,8 @@ pub trait AsyncFsTrait {
     /// * `path` is not an existing and empty directory.
     /// * The current process lacks permissions to remove the directory.
     /// * Some other I/O error occurred.
-    async fn remove_dir<P: AsRef<Path>>(path: P) -> io::Result<()>;
+    async fn remove_dir<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
 
     /// Removes a directory and all of its contents.
     ///
@@ -199,7 +209,8 @@ pub trait AsyncFsTrait {
     /// * `path` is not an existing and empty directory.
     /// * The current process lacks permissions to remove the directory.
     /// * Some other I/O error occurred.
-    async fn remove_dir_all<P: AsRef<Path>>(path: P) -> io::Result<()>;
+    async fn remove_dir_all<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
 
     /// Removes a file.
     ///
@@ -210,7 +221,8 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file.
     /// * The current process lacks permissions to remove the file.
     /// * Some other I/O error occurred.
-    async fn remove_file<P: AsRef<Path>>(path: P) -> io::Result<()>;
+    async fn remove_file<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
 
     /// Renames a file or directory to a new location.
     ///
@@ -225,9 +237,9 @@ pub trait AsyncFsTrait {
     /// * `src` and `dst` are on different filesystems.
     /// * The current process lacks permissions to do the rename operation.
     /// * Some other I/O error occurred.
-    async fn rename<P: AsRef<Path>, Q: AsRef<Path>>(src: P,
-                                                    dst: Q)
-                                                    -> io::Result<()>;
+    async fn rename<P, Q>(src: P, dst: Q) -> io::Result<()>
+        where P: AsRef<Path>,
+              Q: AsRef<Path>;
 
     /// Changes the permissions of a file or directory.
     ///
@@ -239,9 +251,8 @@ pub trait AsyncFsTrait {
     /// * The current process lacks permissions to change attributes on the
     ///   file or directory.
     /// * Some other I/O error occurred.
-    async fn set_permissions<P: AsRef<Path>>(path: P,
-                                             perm: Permissions)
-                                             -> io::Result<()>;
+    async fn set_permissions<P>(path: P, perm: Permissions) -> io::Result<()>
+        where P: AsRef<Path>;
 
     /// Reads metadata for a path without following symbolic links.
     ///
@@ -255,7 +266,8 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
-    async fn symlink_metadata<P: AsRef<Path>>(path: P) -> io::Result<Metadata>;
+    async fn symlink_metadata<P>(path: P) -> io::Result<Metadata>
+        where P: AsRef<Path>;
 
     /// Writes a slice of bytes as the new contents of a file.
     ///
@@ -269,9 +281,9 @@ pub trait AsyncFsTrait {
     /// * The file's parent directory does not exist.
     /// * The current process lacks permissions to write to the file.
     /// * Some other I/O error occurred.
-    async fn write<P: AsRef<Path>, C: AsRef<[u8]>>(path: P,
-                                                   contents: C)
-                                                   -> io::Result<()>;
+    async fn write<P, C>(path: P, contents: C) -> io::Result<()>
+        where P: AsRef<Path>,
+              C: AsRef<[u8]>;
 }
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄

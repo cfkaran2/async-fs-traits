@@ -1,11 +1,7 @@
 //! TODO: Fill this in
 
 pub use std::fs::{FileType, Metadata, Permissions};
-use std::{
-    future::Future,
-    io::{self},
-    path::Path
-};
+use std::{future::Future, io, path::Path};
 
 use async_trait::async_trait;
 
@@ -111,10 +107,9 @@ pub trait AsyncOpenOptionsTrait: std::default::Default {
     /// [`truncate`]: `AsyncOpenOptionsTrait::truncate()`
     /// [`create`]: `AsyncOpenOptionsTrait::create()`
     /// [`create_new`]: `AsyncOpenOptionsTrait::create_new()`
-    async fn open<P: AsRef<Path>, T>(&self,
-                                     path: P)
-                                     -> dyn Future<Output = io::Result<T>>
-        where T: AsyncFileTrait;
+    async fn open<P, T>(&self, path: P) -> dyn Future<Output = io::Result<T>>
+        where P: AsRef<Path>,
+              T: AsyncFileTrait;
 }
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄

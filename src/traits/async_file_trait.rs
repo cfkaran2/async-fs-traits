@@ -1,10 +1,7 @@
 //! TODO: Fill this in
 
 pub use std::fs::{FileType, Metadata, Permissions};
-use std::{
-    io::{self},
-    path::Path
-};
+use std::{io, path::Path};
 
 use async_trait::async_trait;
 use futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite};
@@ -42,8 +39,9 @@ pub trait AsyncFileTrait:
     ///
     /// For more details, see the list of errors documented by
     /// [`AsyncOpenOptionsTrait::open()`].
-    async fn open<P: AsRef<Path>, T>(path: P) -> io::Result<T>
-        where T: AsyncFileTrait;
+    async fn open<P, T>(path: P) -> io::Result<T>
+        where P: AsRef<Path>,
+              T: AsyncFileTrait;
 
     /// Opens a file in write-only mode.
     ///
@@ -62,8 +60,9 @@ pub trait AsyncFileTrait:
     ///
     /// For more details, see the list of errors documented by
     /// [`AsyncOpenOptionsTrait::open()`].
-    async fn create<P: AsRef<Path>, T>(path: P) -> io::Result<T>
-        where T: AsyncFileTrait;
+    async fn create<P, T>(path: P) -> io::Result<T>
+        where P: AsRef<Path>,
+              T: AsyncFileTrait;
 
     /// Synchronizes OS-internal buffered contents and metadata to disk.
     ///

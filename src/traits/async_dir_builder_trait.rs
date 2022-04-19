@@ -1,19 +1,15 @@
-//! TODO: Fill this in
+//! [`AsyncDirBuilderTrait`] defines how builders of directories operate.
+//!
+//! Implement this trait on your file system if you wish it to provide a way of
+//! creating new directories.
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
-use std::{
-    future::Future,
-    io::{self},
-    path::Path
-};
+use std::{future::Future, io, path::Path};
 
 use async_trait::async_trait;
 
 /// A builder for creating directories with configurable options.
-///
-/// For Unix-specific options, import the
-/// [`DirBuilderExt`][`std::os::unix::fs::DirBuilderExt`] trait.
 #[async_trait]
 pub trait AsyncDirBuilderTrait:
     std::fmt::Debug + std::default::Default
@@ -47,9 +43,8 @@ pub trait AsyncDirBuilderTrait:
     /// * The current process lacks permissions to create the directory or its
     ///   missing parents.
     /// * Some other I/O error occurred.
-    async fn create<P: AsRef<Path>>(&self,
-                                    path: P)
-                                    -> dyn Future<Output = io::Result<()>>;
+    async fn create<P>(&self, path: P) -> dyn Future<Output = io::Result<()>>
+        where P: AsRef<Path>;
 }
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄

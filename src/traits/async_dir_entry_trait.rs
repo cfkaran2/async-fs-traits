@@ -2,11 +2,7 @@
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
-use std::{
-    ffi::OsString,
-    io::{self},
-    path::PathBuf
-};
+use std::{ffi::OsString, io, path::PathBuf};
 
 use async_trait::async_trait;
 
