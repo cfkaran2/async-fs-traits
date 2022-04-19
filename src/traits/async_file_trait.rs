@@ -15,20 +15,22 @@ use futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite};
 /// for reading and/or writing.
 ///
 /// Files are automatically closed when they get dropped and any errors detected
-/// on closing are ignored. Use the [`sync_all()`][`File::sync_all()`] method
-/// before dropping a file if such errors need to be handled.
+/// on closing are ignored. Use the
+/// [`sync_all()`][`AsyncDirEntryTrait::sync_all()`] method before dropping a
+/// file if such errors need to be handled.
 ///
 /// **NOTE:** If writing to a file, make sure to call
 /// [`flush()`][`futures_lite::io::AsyncWriteExt::flush()`],
-/// [`sync_data()`][`File::sync_data()`], or [`sync_all()`][`File::sync_all()`]
-/// before dropping the file or else some written data might get lost!
+/// [`sync_data()`][`AsyncDirEntryTrait::sync_data()`], or
+/// [`sync_all()`][`AsyncDirEntryTrait::sync_all()`] before dropping the file or
+/// else some written data might get lost!
 #[async_trait]
 pub trait AsyncFileTrait:
     std::fmt::Debug + AsyncRead + AsyncSeek + AsyncWrite
 {
     /// Opens a file in read-only mode.
     ///
-    /// See the [`OpenOptions::open()`] function for more options.
+    /// See the [`AsyncOpenOptionsTrait::open()`] function for more options.
     ///
     /// # Errors
     ///
@@ -39,7 +41,7 @@ pub trait AsyncFileTrait:
     /// * Some other I/O error occurred.
     ///
     /// For more details, see the list of errors documented by
-    /// [`OpenOptions::open()`].
+    /// [`AsyncOpenOptionsTrait::open()`].
     async fn open<P: AsRef<Path>, T>(path: P) -> io::Result<T>
         where T: AsyncFileTrait;
 
@@ -48,7 +50,7 @@ pub trait AsyncFileTrait:
     /// This method will create a file if it does not exist, and will truncate
     /// it if it does.
     ///
-    /// See the [`OpenOptions::open`] function for more options.
+    /// See the [`AsyncOpenOptionsTrait::open`] function for more options.
     ///
     /// # Errors
     ///
@@ -59,7 +61,7 @@ pub trait AsyncFileTrait:
     /// * Some other I/O error occurred.
     ///
     /// For more details, see the list of errors documented by
-    /// [`OpenOptions::open()`].
+    /// [`AsyncOpenOptionsTrait::open()`].
     async fn create<P: AsRef<Path>, T>(path: P) -> io::Result<T>
         where T: AsyncFileTrait;
 
@@ -75,14 +77,14 @@ pub trait AsyncFileTrait:
 
     /// Synchronizes OS-internal buffered contents to disk.
     ///
-    /// This is similar to [`sync_all()`][`File::sync_data()`], except that file
-    /// metadata may not be synchronized.
+    /// This is similar to [`sync_all()`][`AsyncDirEntryTrait::sync_data
+    /// ()`], except that file metadata may not be synchronized.
     ///
     /// This is intended for use cases that must synchronize the contents of the
     /// file, but don't need the file metadata synchronized to disk.
     ///
     /// Note that some platforms may simply implement this in terms of
-    /// [`sync_all()`][`File::sync_data()`].
+    /// [`sync_all()`][`AsyncDirEntryTrait::sync_data()`].
     async fn sync_data(&self) -> io::Result<()>;
 
     /// Truncates or extends the file.

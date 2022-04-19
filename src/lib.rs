@@ -1,6 +1,16 @@
-//! Async filesystem primitives.
+//! Asynchronous traits for filesystems.
 //!
-//! This crate is an async version of [`std::fs`].
+//! This crate defines a small set of asynchronous traits that can be
+//! implemented on your code to model an asynchronous file system.  The traits
+//! are intended to be sufficiently generic that you can implement wrapper
+//! types in a manner analogous to [Tower's][1] [Service][2] trait, adding
+//! capabilities that the original filesystem authors may not have considered
+//! when developing their own code. In addition, this crate defines its own set
+//! of wrapper types that may be of use to others when they are implementing
+//! the traits defined within this crate.
+//!
+//! [1]: https://crates.io/crates/tower
+//! [2]: https://docs.rs/tower/latest/tower/trait.Service.html
 
 #![warn(missing_docs, missing_debug_implementations, rust_2018_idioms)]
 

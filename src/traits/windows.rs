@@ -60,15 +60,16 @@ pub mod windows {
         unblock(move || std::os::windows::fs::symlink_file(&src, &dst)).await
     }
 
-    /// Windows-specific extensions to [`OpenOptions`].
+    /// Windows-specific extensions to [`AsyncOpenOptionsTrait`].
     pub trait OpenOptionsExt {
         /// Overrides the `dwDesiredAccess` argument to the call to
         /// [`CreateFile`] with the specified value.
         ///
         /// This will override the `read`, `write`, and `append` flags on the
-        /// [`OpenOptions`] structure. This method provides fine-grained
-        /// control over the permissions to read, write and append data,
-        /// attributes (like hidden and system), and extended attributes.
+        /// [`AsyncOpenOptionsTrait`] structure. This method provides
+        /// fine-grained control over the permissions to read, write and append
+        /// data, attributes (like hidden and system), and extended
+        /// attributes.
         ///
         /// [`CreateFile`]: https://docs.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
         fn access_mode(&mut self, access: u32) -> &mut Self;

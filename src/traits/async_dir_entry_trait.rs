@@ -17,7 +17,7 @@ use async_trait::async_trait;
 /// For Unix-specific options, import the
 /// [`DirEntryExt`][`std::os::unix::fs::DirEntryExt`] trait.
 #[async_trait]
-pub trait DirEntry: std::fmt::Debug + std::clone::Clone {
+pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// Returns the full path to this entry.
     ///
     /// The full path is created by joining the original path passed to

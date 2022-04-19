@@ -15,12 +15,15 @@ use async_trait::async_trait;
 /// For Unix-specific options, import the
 /// [`DirBuilderExt`][`std::os::unix::fs::DirBuilderExt`] trait.
 #[async_trait]
-pub trait DirBuilder: std::fmt::Debug + std::default::Default {
+pub trait AsyncDirBuilderTrait:
+    std::fmt::Debug + std::default::Default
+{
     /// Creates a blank set of options.
     ///
-    /// The [`recursive()`][`DirBuilder::recursive()`] option is initially set
-    /// to `false`.
-    async fn new<T>() -> T where T:DirBuilder;
+    /// The [`recursive()`][`AsyncDirBuilderTrait::recursive()`] option is
+    /// initially set to `false`.
+    async fn new<T>() -> T
+        where T: AsyncDirBuilderTrait;
 
     /// Sets the option for recursive mode.
     ///
@@ -45,8 +48,8 @@ pub trait DirBuilder: std::fmt::Debug + std::default::Default {
     ///   missing parents.
     /// * Some other I/O error occurred.
     async fn create<P: AsRef<Path>>(&self,
-                                  path: P)
-                                  -> dyn Future<Output = io::Result<()>>;
+                                    path: P)
+                                    -> dyn Future<Output = io::Result<()>>;
 }
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄

@@ -10,8 +10,8 @@ use std::{
 use async_trait::async_trait;
 
 #[doc(no_inline)]
-use crate::DirEntry;
-use crate::ReadDir;
+use crate::AsyncDirEntryTrait;
+use crate::AsyncReadDirTrait;
 
 /// TODO: Fill this in
 #[async_trait]
@@ -39,8 +39,8 @@ pub trait AsyncFsTrait {
     /// point to the same file, then the file will likely get truncated as a
     /// result of this operation.
     ///
-    /// If you're working with open [`File`]s and want to copy contents through
-    /// those types, use[`futures_lite::io::copy()`] instead.
+    /// If you're working with open [`AsyncDirEntryTrait`]s and want to copy
+    /// contents through those types, use[`futures_lite::io::copy()`] instead.
     ///
     /// # Errors
     ///
@@ -132,7 +132,7 @@ pub trait AsyncFsTrait {
 
     /// Returns a stream of entries in a directory.
     ///
-    /// The stream yields items of type [`io::Result`]`<`[`DirEntry`]`>`. Note
+    /// The stream yields items of type [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Note
     /// that I/O errors can occur while reading from the stream.
     ///
     /// # Errors
@@ -144,8 +144,8 @@ pub trait AsyncFsTrait {
     ///   directory.
     /// * Some other I/O error occurred.
     async fn read_dir<P: AsRef<Path>, T, U>(path: P) -> io::Result<T>
-        where T: ReadDir<U>,
-              U: DirEntry;
+        where T: AsyncReadDirTrait<U>,
+              U: AsyncDirEntryTrait;
 
     /// Reads a symbolic link and returns the path it points to.
     ///
