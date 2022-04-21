@@ -12,9 +12,8 @@ use crate::AsyncDirEntryTrait;
 /// A stream of entries in a directory.
 ///
 /// This stream is returned by [`read_dir()`] and yields items of type
-/// [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Each
-/// [`AsyncDirEntryTrait`] can then retrieve information like entry's path or
-/// metadata.
+/// [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Each [`AsyncDirEntryTrait`] can
+/// then retrieve information like entry's path or metadata.
 #[async_trait]
 pub trait AsyncReadDirTrait<T>:
     std::fmt::Debug + Stream<Item = io::Result<T>>
