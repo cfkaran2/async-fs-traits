@@ -58,7 +58,7 @@ pub trait AsyncFsTrait {
     ///
     /// Note that this function will only create the final directory in `path`.
     /// If you want to create all of its missing parent directories too, use
-    /// [`create_dir_all()`] instead.
+    /// [`create_dir_all()`][AsyncFsTrait::create_dir_all] instead.
     ///
     /// # Errors
     ///
@@ -104,7 +104,8 @@ pub trait AsyncFsTrait {
     ///
     /// This function will traverse symbolic links to read metadata for the
     /// target file or directory. If you want to read metadata without
-    /// following symbolic links, use [`symlink_metadata()`] instead.
+    /// following symbolic links, use
+    /// [`symlink_metadata()`][AsyncFsTrait::symlink_metadata] instead.
     ///
     /// # Errors
     ///
@@ -122,8 +123,8 @@ pub trait AsyncFsTrait {
     /// pre-allocates a buffer based on the file size when available, so it is
     /// typically faster than manually opening a file and reading from it.
     ///
-    /// If you want to read the contents as a string, use [`read_to_string()`]
-    /// instead.
+    /// If you want to read the contents as a string, use
+    /// [`read_to_string()`][AsyncFsTrait::read_to_string] instead.
     ///
     /// # Errors
     ///
@@ -171,7 +172,8 @@ pub trait AsyncFsTrait {
     /// pre-allocates a string based on the file size when available, so it is
     /// typically faster than manually opening a file and reading from it.
     ///
-    /// If you want to read the contents as raw bytes, use [`read()`] instead.
+    /// If you want to read the contents as raw bytes, use
+    /// [`read()`][AsyncFsTrait::read] instead.
     ///
     /// # Errors
     ///
@@ -187,7 +189,8 @@ pub trait AsyncFsTrait {
     /// Removes an empty directory.
     ///
     /// Note that this function can only delete an empty directory. If you want
-    /// to delete a directory and all of its contents, use [`remove_dir_all()`]
+    /// to delete a directory and all of its contents, use
+    /// [`remove_dir_all()`][AsyncFsTrait::remove_dir_all]
     /// instead.
     ///
     /// # Errors
@@ -257,7 +260,8 @@ pub trait AsyncFsTrait {
     /// Reads metadata for a path without following symbolic links.
     ///
     /// If you want to follow symbolic links before reading metadata of the
-    /// target file or directory, use [`metadata()`] instead.
+    /// target file or directory, use [`metadata()`][AsyncFsTrait::metadata]
+    /// instead.
     ///
     /// # Errors
     ///

@@ -40,14 +40,14 @@ pub trait AsyncFileTrait:
 
     /// Synchronizes OS-internal buffered contents to disk.
     ///
-    /// This is similar to [`sync_all()`][`AsyncDirEntryTrait::sync_data
-    /// ()`], except that file metadata may not be synchronized.
+    /// This is similar to [`sync_all()`][AsyncFileTrait::sync_all], except that
+    /// file metadata may not be synchronized.
     ///
     /// This is intended for use cases that must synchronize the contents of the
     /// file, but don't need the file metadata synchronized to disk.
     ///
     /// Note that some platforms may simply implement this in terms of
-    /// [`sync_all()`][`AsyncDirEntryTrait::sync_data()`].
+    /// [`sync_all()`][AsyncFileTrait::sync_all].
     async fn sync_data(&self) -> io::Result<()>;
 
     /// Truncates or extends the file.
