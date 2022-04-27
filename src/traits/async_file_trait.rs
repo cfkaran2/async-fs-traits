@@ -1,7 +1,7 @@
 //! TODO: Fill this in
 
 pub use std::fs::{FileType, Metadata, Permissions};
-use std::{io, path::Path};
+use std::io;
 
 use async_trait::async_trait;
 use futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite};
@@ -9,61 +9,25 @@ use futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite};
 /// An open file on the filesystem.
 ///
 /// Depending on what options the file was opened with, this type can be used
-/// for reading and/or writing.
+/// for reading and/or writing.  Files should be created or opened using a type
+/// that implements the
+/// [`AsyncFileBuilderTrait`][crate::async_file_builder_trait::AsyncFileBuilderTrait].
 ///
 /// Files are automatically closed when they get dropped and any errors detected
 /// on closing are ignored. Use the
-/// [`sync_all()`][`AsyncDirEntryTrait::sync_all()`] method before dropping a
-/// file if such errors need to be handled.
+/// [`sync_all()`][AsyncFileTrait::sync_all()]
+/// method before dropping a file if such errors need to be handled.
 ///
 /// **NOTE:** If writing to a file, make sure to call
 /// [`flush()`][`futures_lite::io::AsyncWriteExt::flush()`],
-/// [`sync_data()`][`AsyncDirEntryTrait::sync_data()`], or
-/// [`sync_all()`][`AsyncDirEntryTrait::sync_all()`] before dropping the file or
-/// else some written data might get lost!
+/// [`sync_data()`][AsyncFileTrait::sync_data()],
+/// or
+/// [`sync_all()`][AsyncFileTrait::sync_all()]
+/// before dropping the file or else some written data might get lost!
 #[async_trait]
 pub trait AsyncFileTrait:
     std::fmt::Debug + AsyncRead + AsyncSeek + AsyncWrite
 {
-    /// Opens a file in read-only mode.
-    ///
-    /// See the [`AsyncOpenOptionsTrait::open()`] function for more options.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing file.
-    /// * The current process lacks permissions to read the file.
-    /// * Some other I/O error occurred.
-    ///
-    /// For more details, see the list of errors documented by
-    /// [`AsyncOpenOptionsTrait::open()`].
-    async fn open<P, T>(path: P) -> io::Result<T>
-        where P: AsRef<Path>,
-              T: AsyncFileTrait;
-
-    /// Opens a file in write-only mode.
-    ///
-    /// This method will create a file if it does not exist, and will truncate
-    /// it if it does.
-    ///
-    /// See the [`AsyncOpenOptionsTrait::open`] function for more options.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * The file's parent directory does not exist.
-    /// * The current process lacks permissions to write to the file.
-    /// * Some other I/O error occurred.
-    ///
-    /// For more details, see the list of errors documented by
-    /// [`AsyncOpenOptionsTrait::open()`].
-    async fn create<P, T>(path: P) -> io::Result<T>
-        where P: AsRef<Path>,
-              T: AsyncFileTrait;
-
     /// Synchronizes OS-internal buffered contents and metadata to disk.
     ///
     /// This function will ensure that all in-memory data reaches the
