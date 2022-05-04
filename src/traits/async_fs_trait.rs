@@ -31,202 +31,6 @@ pub trait AsyncFsTrait {
     async fn canonicalize<P>(path: P) -> io::Result<PathBuf>
         where P: AsRef<Path>;
 
-    /// Copies a file to a new location.
-    ///
-    /// On success, the total number of bytes copied is returned and equals the
-    /// length of the `dst` file after this operation.
-    ///
-    /// The old contents of `dst` will be overwritten. If `src` and `dst` both
-    /// point to the same file, then the file will likely get truncated as a
-    /// result of this operation.
-    ///
-    /// If you're working with open [`AsyncDirEntryTrait`]s and want to copy
-    /// contents through those types, use[`futures_lite::io::copy()`] instead.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `src` does not point to an existing file.
-    /// * The current process lacks permissions to read `src` or write `dst`.
-    /// * Some other I/O error occurred.
-    async fn copy<P, Q>(src: P, dst: Q) -> io::Result<u64>
-        where P: AsRef<Path>,
-              Q: AsRef<Path>;
-
-    /// Creates a directory.
-    ///
-    /// Note that this function will only create the final directory in `path`.
-    /// If you want to create all of its missing parent directories too, use
-    /// [`create_dir_all()`][AsyncFsTrait::create_dir_all] instead.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` already points to an existing file or directory.
-    /// * A parent directory in `path` does not exist.
-    /// * The current process lacks permissions to create the directory.
-    /// * Some other I/O error occurred.
-    async fn create_dir<P>(path: P) -> io::Result<()>
-        where P: AsRef<Path>;
-
-    /// Creates a directory and its parent directories if they are missing.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` already points to an existing file or directory.
-    /// * The current process lacks permissions to create the directory or its
-    ///   missing parents.
-    /// * Some other I/O error occurred.
-    async fn create_dir_all<P>(path: P) -> io::Result<()>
-        where P: AsRef<Path>;
-
-    /// Creates a hard link on the filesystem.
-    ///
-    /// The `dst` path will be a link pointing to the `src` path. Note that
-    /// operating systems often require these two paths to be located on the
-    /// same filesystem.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `src` does not point to an existing file.
-    /// * Some other I/O error occurred.
-    async fn hard_link<P, Q>(src: P, dst: Q) -> io::Result<()>
-        where P: AsRef<Path>,
-              Q: AsRef<Path>;
-
-    /// Reads metadata for a path.
-    ///
-    /// This function will traverse symbolic links to read metadata for the
-    /// target file or directory. If you want to read metadata without
-    /// following symbolic links, use
-    /// [`symlink_metadata()`][AsyncFsTrait::symlink_metadata] instead.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing file or directory.
-    /// * The current process lacks permissions to read metadata for the path.
-    /// * Some other I/O error occurred.
-    async fn metadata<P>(path: P) -> io::Result<Metadata>
-        where P: AsRef<Path>;
-
-    /// Reads the entire contents of a file as raw bytes.
-    ///
-    /// This is a convenience function for reading entire files. It
-    /// pre-allocates a buffer based on the file size when available, so it is
-    /// typically faster than manually opening a file and reading from it.
-    ///
-    /// If you want to read the contents as a string, use
-    /// [`read_to_string()`][AsyncFsTrait::read_to_string] instead.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing file.
-    /// * The current process lacks permissions to read the file.
-    /// * Some other I/O error occurred.
-    async fn read<P>(path: P) -> io::Result<Vec<u8>>
-        where P: AsRef<Path>;
-
-    /// Returns a stream of entries in a directory.
-    ///
-    /// The stream yields items of type
-    /// [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Note that I/O errors can
-    /// occur while reading from the stream.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing directory.
-    /// * The current process lacks permissions to read the contents of the
-    ///   directory.
-    /// * Some other I/O error occurred.
-    async fn read_dir<P, T, U>(path: P) -> io::Result<T>
-        where P: AsRef<Path>,
-              T: AsyncReadDirTrait<U>,
-              U: AsyncDirEntryTrait;
-
-    /// Reads a symbolic link and returns the path it points to.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing link.
-    /// * Some other I/O error occurred.
-    async fn read_link<P>(path: P) -> io::Result<PathBuf>
-        where P: AsRef<Path>;
-
-    /// Reads the entire contents of a file as a string.
-    ///
-    /// This is a convenience function for reading entire files. It
-    /// pre-allocates a string based on the file size when available, so it is
-    /// typically faster than manually opening a file and reading from it.
-    ///
-    /// If you want to read the contents as raw bytes, use
-    /// [`read()`][AsyncFsTrait::read] instead.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing file.
-    /// * The current process lacks permissions to read the file.
-    /// * The contents of the file cannot be read as a UTF-8 string.
-    /// * Some other I/O error occurred.
-    async fn read_to_string<P>(path: P) -> io::Result<String>
-        where P: AsRef<Path>;
-
-    /// Removes an empty directory.
-    ///
-    /// Note that this function can only delete an empty directory. If you want
-    /// to delete a directory and all of its contents, use
-    /// [`remove_dir_all()`][AsyncFsTrait::remove_dir_all]
-    /// instead.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` is not an existing and empty directory.
-    /// * The current process lacks permissions to remove the directory.
-    /// * Some other I/O error occurred.
-    async fn remove_dir<P>(path: P) -> io::Result<()>
-        where P: AsRef<Path>;
-
-    /// Removes a directory and all of its contents.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` is not an existing and empty directory.
-    /// * The current process lacks permissions to remove the directory.
-    /// * Some other I/O error occurred.
-    async fn remove_dir_all<P>(path: P) -> io::Result<()>
-        where P: AsRef<Path>;
-
-    /// Removes a file.
-    ///
-    /// # Errors
-    ///
-    /// An error will be returned in the following situations:
-    ///
-    /// * `path` does not point to an existing file.
-    /// * The current process lacks permissions to remove the file.
-    /// * Some other I/O error occurred.
-    async fn remove_file<P>(path: P) -> io::Result<()>
-        where P: AsRef<Path>;
-
     /// Renames a file or directory to a new location.
     ///
     /// If a file or directory already exists at the target location, it will be
@@ -257,6 +61,33 @@ pub trait AsyncFsTrait {
     async fn set_permissions<P>(path: P, perm: Permissions) -> io::Result<()>
         where P: AsRef<Path>;
 
+    /// Creates a hard link on the filesystem.
+    ///
+    /// The `dst` path will be a link pointing to the `src` path. Note that
+    /// operating systems often require these two paths to be located on the
+    /// same filesystem.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `src` does not point to an existing file.
+    /// * Some other I/O error occurred.
+    async fn hard_link<P, Q>(src: P, dst: Q) -> io::Result<()>
+        where P: AsRef<Path>,
+              Q: AsRef<Path>;
+
+    /// Reads a symbolic link and returns the path it points to.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `path` does not point to an existing link.
+    /// * Some other I/O error occurred.
+    async fn read_link<P>(path: P) -> io::Result<PathBuf>
+        where P: AsRef<Path>;
+
     /// Reads metadata for a path without following symbolic links.
     ///
     /// If you want to follow symbolic links before reading metadata of the
@@ -273,21 +104,105 @@ pub trait AsyncFsTrait {
     async fn symlink_metadata<P>(path: P) -> io::Result<Metadata>
         where P: AsRef<Path>;
 
-    /// Writes a slice of bytes as the new contents of a file.
+    /// Reads metadata for a path.
     ///
-    /// This function will create a file if it does not exist, and will entirely
-    /// replace its contents if it does.
+    /// This function will traverse symbolic links to read metadata for the
+    /// target file or directory. If you want to read metadata without
+    /// following symbolic links, use
+    /// [`symlink_metadata()`][AsyncFsTrait::symlink_metadata] instead.
     ///
     /// # Errors
     ///
     /// An error will be returned in the following situations:
     ///
-    /// * The file's parent directory does not exist.
-    /// * The current process lacks permissions to write to the file.
+    /// * `path` does not point to an existing file or directory.
+    /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
-    async fn write<P, C>(path: P, contents: C) -> io::Result<()>
+    async fn metadata<P>(path: P) -> io::Result<Metadata>
+        where P: AsRef<Path>;
+
+    /// Copies a file to a new location.
+    ///
+    /// On success, the total number of bytes copied is returned and equals the
+    /// length of the `dst` file after this operation.
+    ///
+    /// The old contents of `dst` will be overwritten. If `src` and `dst` both
+    /// point to the same file, then the file will likely get truncated as a
+    /// result of this operation.
+    ///
+    /// If you're working with open [`AsyncDirEntryTrait`]s and want to copy
+    /// contents through those types, use[`futures_lite::io::copy()`] instead.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `src` does not point to an existing file.
+    /// * The current process lacks permissions to read `src` or write `dst`.
+    /// * Some other I/O error occurred.
+    async fn copy<P, Q>(src: P, dst: Q) -> io::Result<u64>
         where P: AsRef<Path>,
-              C: AsRef<[u8]>;
+              Q: AsRef<Path>;
+
+    /// Removes a file.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `path` does not point to an existing file.
+    /// * The current process lacks permissions to remove the file.
+    /// * Some other I/O error occurred.
+    async fn remove_file<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
+
+    /// Returns a stream of entries in a directory.
+    ///
+    /// The stream yields items of type
+    /// [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Note that I/O errors can
+    /// occur while reading from the stream.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `path` does not point to an existing directory.
+    /// * The current process lacks permissions to read the contents of the
+    ///   directory.
+    /// * Some other I/O error occurred.
+    async fn read_dir<P, T, U>(path: P) -> io::Result<T>
+        where P: AsRef<Path>,
+              T: AsyncReadDirTrait<U>,
+              U: AsyncDirEntryTrait;
+
+    /// Removes an empty directory.
+    ///
+    /// Note that this function can only delete an empty directory. If you want
+    /// to delete a directory and all of its contents, use
+    /// [`remove_dir_all()`][AsyncFsTrait::remove_dir_all]
+    /// instead.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `path` is not an existing and empty directory.
+    /// * The current process lacks permissions to remove the directory.
+    /// * Some other I/O error occurred.
+    async fn remove_dir<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
+
+    /// Removes a directory and all of its contents.
+    ///
+    /// # Errors
+    ///
+    /// An error will be returned in the following situations:
+    ///
+    /// * `path` is not an existing and empty directory.
+    /// * The current process lacks permissions to remove the directory.
+    /// * Some other I/O error occurred.
+    async fn remove_dir_all<P>(path: P) -> io::Result<()>
+        where P: AsRef<Path>;
 }
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄
