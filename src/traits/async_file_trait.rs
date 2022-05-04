@@ -24,9 +24,7 @@ use async_trait::async_trait;
 /// [`sync_all()`][AsyncFileTrait::sync_all()]
 /// before dropping the file or else some written data might get lost!
 #[async_trait]
-pub trait AsyncFileTrait:
-    std::fmt::Debug
-{
+pub trait AsyncFileTrait: std::fmt::Debug {
     /// Synchronizes OS-internal buffered contents and metadata to disk.
     ///
     /// This function will ensure that all in-memory data reaches the
