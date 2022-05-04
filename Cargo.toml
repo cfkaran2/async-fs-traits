@@ -19,6 +19,3 @@ categories = ["asynchronous", "concurrency", "traits"]
 [dependencies]
 async-trait = {version = "^0.1"}
 futures-lite = {version = "^1.2", optional = true}
-
-[features]
-futures-lite = ["dep:futures-lite"]

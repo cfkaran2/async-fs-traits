@@ -90,10 +90,10 @@ pub trait Stream {
     }
 }
 
-#[cfg(futures_lite)]
-impl Stream for T where T: futures_lite::stream::Stream
+#[cfg(feature = "futures-lite")]
+impl<T, U> Stream for T where T: futures_lite::stream::Stream<Item = U>
 {
-    type Item = T::Item;
+    type Item = U;
 
     fn poll_next(self: Pin<&mut Self>,
                  cx: &mut Context<'_>)
@@ -102,8 +102,20 @@ impl Stream for T where T: futures_lite::stream::Stream
     }
 }
 
-#[cfg(futures_lite)]
-impl futures_lite::stream::StreamExt for T where T: Stream
-{
-    // add code here
+//  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄
+//  ▀▀▀██▀▀▀  ██▀▀▀▀▀▀  ▄█▀▀▀▀█   ▀▀▀██▀▀▀  ▄█▀▀▀▀█
+//     ██     ██        ██▄          ██     ██▄
+//     ██     ███████    ▀████▄      ██      ▀████▄
+//     ██     ██             ▀██     ██          ▀██
+//     ██     ██▄▄▄▄▄▄  █▄▄▄▄▄█▀     ██     █▄▄▄▄▄█▀
+//     ▀▀     ▀▀▀▀▀▀▀▀   ▀▀▀▀▀       ▀▀      ▀▀▀▀▀
+//
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        let result = 2 + 2;
+        assert_eq!(result, 4);
+    }
 }
