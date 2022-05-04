@@ -4,10 +4,10 @@ pub use std::fs::{FileType, Metadata, Permissions};
 use std::io;
 
 use async_trait::async_trait;
-use futures_lite::stream::Stream;
 
 #[doc(no_inline)]
 use crate::AsyncDirEntryTrait;
+use crate::Stream;
 
 /// A stream of entries in a directory.
 ///
