@@ -4,7 +4,6 @@ pub use std::fs::{FileType, Metadata, Permissions};
 use std::io;
 
 use async_trait::async_trait;
-use futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite};
 
 /// An open file on the filesystem.
 ///
@@ -26,7 +25,7 @@ use futures_lite::io::{AsyncRead, AsyncSeek, AsyncWrite};
 /// before dropping the file or else some written data might get lost!
 #[async_trait]
 pub trait AsyncFileTrait:
-    std::fmt::Debug + AsyncRead + AsyncSeek + AsyncWrite
+    std::fmt::Debug
 {
     /// Synchronizes OS-internal buffered contents and metadata to disk.
     ///
