@@ -6,15 +6,15 @@ use std::io;
 use async_trait::async_trait;
 
 #[doc(no_inline)]
-use crate::AsyncDirEntryTrait;
-use crate::Stream;
+use super::AsyncDirEntryTrait;
+use super::Stream;
 
 /// A stream of entries in a directory.
 ///
 /// This stream is returned by
-/// [`read_dir()`][crate::async_fs_trait::AsyncFsTrait::read_dir] and yields
+/// [`read_dir()`][super::AsyncFsTrait::read_dir] and yields
 /// items of type [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Each
-/// [`AsyncDirEntryTrait`] can
+/// [`super::AsyncDirEntryTrait`] can
 /// then retrieve information like entry's path or metadata.
 #[async_trait]
 pub trait AsyncReadDirTrait<T>:

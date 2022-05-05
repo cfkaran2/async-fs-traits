@@ -9,13 +9,13 @@ use async_trait::async_trait;
 /// An entry in a directory.
 ///
 /// A stream of entries in a directory is returned by
-/// [`read_dir()`][crate::async_fs_trait::AsyncFsTrait::read_dir].
+/// [`read_dir()`][super::AsyncFsTrait::read_dir].
 #[async_trait]
 pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// Returns the full path to this entry.
     ///
     /// The full path is created by joining the original path passed to
-    /// [`read_dir()`][crate::async_fs_trait::AsyncFsTrait::read_dir] with the
+    /// [`read_dir()`][super::AsyncFsTrait::read_dir] with the
     /// name of this entry.
     async fn path(&self) -> PathBuf;
 
@@ -24,7 +24,7 @@ pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// This function will traverse symbolic links to read the metadata.
     ///
     /// If you want to read metadata without following symbolic links, use
-    /// [`symlink_metadata()`][crate::async_fs_trait::AsyncFsTrait::symlink_metadata]
+    /// [`symlink_metadata()`][super::AsyncFsTrait::symlink_metadata]
     /// instead.
     ///
     /// # Errors
@@ -42,7 +42,7 @@ pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// one.
     ///
     /// If you want to read metadata with following symbolic links, use
-    /// [`metadata()`][crate::async_fs_trait::AsyncFsTrait::metadata] instead.
+    /// [`metadata()`][super::AsyncFsTrait::metadata] instead.
     ///
     /// # Errors
     ///

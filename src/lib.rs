@@ -18,6 +18,8 @@
 pub use std::fs::{FileType, Metadata, Permissions};
 
 pub mod traits;
+
+#[doc(inline)]
 pub use traits::*;
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄

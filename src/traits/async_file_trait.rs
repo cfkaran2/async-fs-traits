@@ -10,18 +10,17 @@ use async_trait::async_trait;
 /// Depending on what options the file was opened with, this type can be used
 /// for reading and/or writing.  Files should be created or opened using a type
 /// that implements the
-/// [`AsyncFileBuilderTrait`][crate::async_file_builder_trait::AsyncFileBuilderTrait].
+/// [`AsyncFileBuilderTrait`][super::AsyncFileBuilderTrait].
 ///
 /// Files are automatically closed when they get dropped and any errors detected
 /// on closing are ignored. Use the
-/// [`sync_all()`][AsyncFileTrait::sync_all()]
+/// [`sync_all()`][self::AsyncFileTrait::sync_all()]
 /// method before dropping a file if such errors need to be handled.
 ///
 /// **NOTE:** If writing to a file, make sure to call
-/// [`flush()`][`futures_lite::io::AsyncWriteExt::flush()`],
-/// [`sync_data()`][AsyncFileTrait::sync_data()],
+/// [`sync_data()`][self::AsyncFileTrait::sync_data()],
 /// or
-/// [`sync_all()`][AsyncFileTrait::sync_all()]
+/// [`sync_all()`][self::AsyncFileTrait::sync_all()]
 /// before dropping the file or else some written data might get lost!
 #[async_trait]
 pub trait AsyncFileTrait: std::fmt::Debug {

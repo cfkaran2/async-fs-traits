@@ -10,8 +10,8 @@ use std::{
 use async_trait::async_trait;
 
 #[doc(no_inline)]
-use crate::AsyncDirEntryTrait;
-use crate::AsyncReadDirTrait;
+use super::AsyncDirEntryTrait;
+use super::AsyncReadDirTrait;
 
 /// TODO: Fill this in
 #[async_trait]
@@ -129,9 +129,6 @@ pub trait AsyncFsTrait {
     /// The old contents of `dst` will be overwritten. If `src` and `dst` both
     /// point to the same file, then the file will likely get truncated as a
     /// result of this operation.
-    ///
-    /// If you're working with open [`AsyncDirEntryTrait`]s and want to copy
-    /// contents through those types, use[`futures_lite::io::copy()`] instead.
     ///
     /// # Errors
     ///
