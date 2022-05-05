@@ -90,18 +90,6 @@ pub trait Stream {
     }
 }
 
-#[cfg(feature = "futures-lite")]
-impl<T, U> Stream for T where T: futures_lite::stream::Stream<Item = U>
-{
-    type Item = U;
-
-    fn poll_next(self: Pin<&mut Self>,
-                 cx: &mut Context<'_>)
-                 -> Poll<Option<Self::Item>> {
-        (self as Pin<&mut T>).poll_next(cx)
-    }
-}
-
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄
 //  ▀▀▀██▀▀▀  ██▀▀▀▀▀▀  ▄█▀▀▀▀█   ▀▀▀██▀▀▀  ▄█▀▀▀▀█
 //     ██     ██        ██▄          ██     ██▄
