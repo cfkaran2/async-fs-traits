@@ -123,26 +123,26 @@ impl<T> AsyncWrite for T where T: futures_lite::io::AsyncWrite
                   cx: &mut Context<'_>,
                   buf: &[u8])
                   -> Poll<io::Result<usize>> {
-        (self as T).poll_write(cx, buf)
+        (self as Pin<&mut T>).poll_write(cx, buf)
     }
 
     fn poll_flush(self: Pin<&mut Self>,
                   cx: &mut Context<'_>)
                   -> Poll<io::Result<()>> {
-        (self as T).poll_flush(cx)
+        (self as Pin<&mut T>).poll_flush(cx)
     }
 
     fn poll_close(self: Pin<&mut Self>,
                   cx: &mut Context<'_>)
                   -> Poll<io::Result<()>> {
-        (self as T).poll_close(cx)
+        (self as Pin<&mut T>).poll_close(cx)
     }
 
     fn poll_write_vectored(self: Pin<&mut Self>,
                            cx: &mut Context<'_>,
                            bufs: &[IoSlice<'_>])
                            -> Poll<io::Result<usize>> {
-        (self as T).poll_write_vectored(cx, bufs)
+        (self as Pin<&mut T>).poll_write_vectored(cx, bufs)
     }
 }
 

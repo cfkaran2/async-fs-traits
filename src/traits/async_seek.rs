@@ -47,7 +47,7 @@ impl<T> AsyncSeek for T where T: futures_lite::io::AsyncSeek
                  cx: &mut Context<'_>,
                  pos: SeekFrom)
                  -> Poll<io::Result<u64>> {
-        (self as T).poll_seek(cx, pos)
+        (self as Pin<&mut T>).poll_seek(cx, pos)
     }
 }
 

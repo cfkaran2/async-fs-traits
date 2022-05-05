@@ -98,7 +98,7 @@ impl<T, U> Stream for T where T: futures_lite::stream::Stream<Item = U>
     fn poll_next(self: Pin<&mut Self>,
                  cx: &mut Context<'_>)
                  -> Poll<Option<Self::Item>> {
-        (self as T).poll_next(cx)
+        (self as Pin<&mut T>).poll_next(cx)
     }
 }
 

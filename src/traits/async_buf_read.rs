@@ -72,11 +72,11 @@ impl<T> AsyncBufRead for T where T: futures_lite::io::AsyncBufRead
     fn poll_fill_buf(self: Pin<&mut Self>,
                      cx: &mut Context<'_>)
                      -> Poll<io::Result<&[u8]>> {
-        (self as T).poll_fill_buf(cx)
+        (self as Pin<&mut T>).poll_fill_buf(cx)
     }
 
     fn consume(self: Pin<&mut Self>, amt: usize) {
-        (self as T).consume(amt)
+        (self as Pin<&mut T>).consume(amt)
     }
 }
 

@@ -78,14 +78,14 @@ impl<T> AsyncRead for T where T: futures_lite::io::AsyncRead
                  cx: &mut Context<'_>,
                  buf: &mut [u8])
                  -> Poll<io::Result<usize>> {
-        (self as T).poll_read(cx, buf)
+        (self as Pin<&mut T>).poll_read(cx, buf)
     }
 
     fn poll_read_vectored(self: Pin<&mut Self>,
                           cx: &mut Context<'_>,
                           bufs: &mut [IoSliceMut<'_>])
                           -> Poll<io::Result<usize>> {
-        (self as T).poll_read_vectored(cx, bufs)
+        (self as Pin<&mut T>).poll_read_vectored(cx, bufs)
     }
 }
 
