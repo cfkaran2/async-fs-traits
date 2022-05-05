@@ -19,3 +19,4 @@ categories = ["asynchronous", "concurrency", "traits"]
 [dependencies]
 async-trait = {version = "^0.1"}
 futures-io = {version = "^0.3"}
+futures-core = {version = "^0.3"}
