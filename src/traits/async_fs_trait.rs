@@ -91,8 +91,7 @@ pub trait AsyncFsTrait {
     /// Reads metadata for a path without following symbolic links.
     ///
     /// If you want to follow symbolic links before reading metadata of the
-    /// target file or directory, use [`metadata()`][AsyncFsTrait::metadata]
-    /// instead.
+    /// target file or directory, use [`metadata()`][1] instead.
     ///
     /// # Errors
     ///
@@ -101,6 +100,8 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
+    ///
+    /// [1]: AsyncFsTrait::metadata
     async fn symlink_metadata<P>(path: P) -> io::Result<Metadata>
         where P: AsRef<Path>;
 
@@ -108,8 +109,7 @@ pub trait AsyncFsTrait {
     ///
     /// This function will traverse symbolic links to read metadata for the
     /// target file or directory. If you want to read metadata without
-    /// following symbolic links, use
-    /// [`symlink_metadata()`][AsyncFsTrait::symlink_metadata] instead.
+    /// following symbolic links, use[`symlink_metadata()`][1] instead.
     ///
     /// # Errors
     ///
@@ -118,6 +118,8 @@ pub trait AsyncFsTrait {
     /// * `path` does not point to an existing file or directory.
     /// * The current process lacks permissions to read metadata for the path.
     /// * Some other I/O error occurred.
+    ///
+    /// [1]: AsyncFsTrait::symlink_metadata
     async fn metadata<P>(path: P) -> io::Result<Metadata>
         where P: AsRef<Path>;
 
@@ -176,8 +178,7 @@ pub trait AsyncFsTrait {
     ///
     /// Note that this function can only delete an empty directory. If you want
     /// to delete a directory and all of its contents, use
-    /// [`remove_dir_all()`][AsyncFsTrait::remove_dir_all]
-    /// instead.
+    /// [`remove_dir_all()`][1] instead.
     ///
     /// # Errors
     ///
@@ -186,6 +187,8 @@ pub trait AsyncFsTrait {
     /// * `path` is not an existing and empty directory.
     /// * The current process lacks permissions to remove the directory.
     /// * Some other I/O error occurred.
+    ///
+    /// [1]: super::AsyncFsTrait::remove_dir_all()
     async fn remove_dir<P>(path: P) -> io::Result<()>
         where P: AsRef<Path>;
 

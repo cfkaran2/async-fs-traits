@@ -8,15 +8,17 @@ use async_trait::async_trait;
 
 /// An entry in a directory.
 ///
-/// A stream of entries in a directory is returned by
-/// [`read_dir()`][super::AsyncFsTrait::read_dir].
+/// A stream of entries in a directory is returned by[`read_dir()`][1].
+///
+/// [1]: super::AsyncFsTrait::read_dir
 #[async_trait]
 pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// Returns the full path to this entry.
     ///
     /// The full path is created by joining the original path passed to
-    /// [`read_dir()`][super::AsyncFsTrait::read_dir] with the
-    /// name of this entry.
+    /// [`read_dir()`][1] with the name of this entry.
+    ///
+    /// [1]: super::AsyncFsTrait::read_dir
     async fn path(&self) -> PathBuf;
 
     /// Reads the metadata for this entry.
@@ -24,8 +26,7 @@ pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// This function will traverse symbolic links to read the metadata.
     ///
     /// If you want to read metadata without following symbolic links, use
-    /// [`symlink_metadata()`][super::AsyncFsTrait::symlink_metadata]
-    /// instead.
+    /// [`symlink_metadata()`][1] instead.
     ///
     /// # Errors
     ///
@@ -34,6 +35,8 @@ pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// * This entry does not point to an existing file or directory anymore.
     /// * The current process lacks permissions to read the metadata.
     /// * Some other I/O error occurred.
+    ///
+    /// [1]: super::AsyncFsTrait::symlink_metadata
     async fn metadata(&self) -> io::Result<Metadata>;
 
     /// Reads the file type for this entry.
@@ -42,7 +45,7 @@ pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// one.
     ///
     /// If you want to read metadata with following symbolic links, use
-    /// [`metadata()`][super::AsyncFsTrait::metadata] instead.
+    /// [`metadata()`][1] instead.
     ///
     /// # Errors
     ///
@@ -51,6 +54,8 @@ pub trait AsyncDirEntryTrait: std::fmt::Debug + std::clone::Clone {
     /// * This entry does not point to an existing file or directory anymore.
     /// * The current process lacks permissions to read this entry's metadata.
     /// * Some other I/O error occurred.
+    ///
+    /// [1]: super::AsyncFsTrait::metadata
     async fn file_type(&self) -> io::Result<FileType>;
 
     /// Returns the bare name of this entry without the leading path.

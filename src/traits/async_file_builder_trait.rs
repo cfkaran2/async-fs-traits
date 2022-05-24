@@ -10,18 +10,21 @@ use crate::AsyncFileTrait;
 
 /// A builder for opening files with configurable options.
 ///
-/// Files can be opened in [`read`][`AsyncFileBuilderTrait::read()`] and/or
-/// [`write`][`AsyncFileBuilderTrait::write()`] mode.
+/// Files can be opened in [`read`][1] and/or [`write`][2] mode.
 ///
-/// The [`append`][`AsyncFileBuilderTrait::append()`] option opens files in a
-/// special writing mode that moves the file cursor to the end of file before
-/// every write operation.
+/// The [`append`][3] option opens files in a special writing mode that moves
+/// the file cursor to the end of file before every write operation.
 ///
-/// It is also possible to [`truncate`][`AsyncFileBuilderTrait::truncate()`] the
-/// file right after opening, to
-/// [`create`][`AsyncFileBuilderTrait::create()`] a file if it doesn't exist
-/// yet, or to always create a new file with
-/// [`create_new`][`AsyncFileBuilderTrait::create_new()`].
+/// It is also possible to [`truncate`][4] the file right after opening, to
+/// [`create`][5] a file if it doesn't exist yet, or to always create a new
+/// file with[`create_new`][6].
+///
+/// [1]: AsyncFileBuilderTrait::read()
+/// [2]: AsyncFileBuilderTrait::write()
+/// [3]: AsyncFileBuilderTrait::append()
+/// [4]: AsyncFileBuilderTrait::truncate()
+/// [5]: AsyncFileBuilderTrait::create()
+/// [6]: AsyncFileBuilderTrait::create_new()
 #[async_trait]
 pub trait AsyncFileBuilderTrait: std::default::Default {
     /// Creates a blank set of options.
@@ -59,9 +62,11 @@ pub trait AsyncFileBuilderTrait: std::default::Default {
     ///
     /// When set to `true`, the file will be truncated to the length of 0 bytes.
     ///
-    /// The file must be opened in [`write`][`AsyncFileBuilderTrait::write()`]
-    /// or [`append`][`AsyncFileBuilderTrait::append()`] mode for truncation to
-    /// work.
+    /// The file must be opened in [`write`][1] or [`append`][2] mode for
+    /// truncation to work.
+    ///
+    /// [1]: AsyncFileBuilderTrait::write()
+    /// [2]: AsyncFileBuilderTrait::append()
     async fn truncate<T>(self, truncate: bool) -> T
         where T: AsyncFileBuilderTrait;
 
@@ -70,9 +75,11 @@ pub trait AsyncFileBuilderTrait: std::default::Default {
     /// When set to `true`, this option means a new file will be created if it
     /// doesn't exist.
     ///
-    /// The file must be opened in [`write`][`AsyncFileBuilderTrait::write()`]
-    /// or [`append`][`AsyncFileBuilderTrait::append()`] mode for file creation
-    /// to work.
+    /// The file must be opened in [`write`][1] or [`append`][2] mode for file
+    /// creation to work.
+    ///
+    /// [1]: AsyncFileBuilderTrait::write()
+    /// [2]: AsyncFileBuilderTrait::append()
     async fn create<T>(self, create: bool) -> T
         where T: AsyncFileBuilderTrait;
 
@@ -82,9 +89,11 @@ pub trait AsyncFileBuilderTrait: std::default::Default {
     /// When set to `true`, this option means a new file will be created, or the
     /// open operation will fail if the file already exists.
     ///
-    /// The file must be opened in [`write`][`AsyncFileBuilderTrait::write()`]
-    /// or [`append`][`AsyncFileBuilderTrait::append()`] mode for file creation
-    /// to work.
+    /// The file must be opened in [`write`][1] or [`append`][2] mode for file
+    /// creation to work.
+    ///
+    /// [1]: AsyncFileBuilderTrait::write()
+    /// [2]: AsyncFileBuilderTrait::append()
     async fn create_new<T>(self, create_new: bool) -> T
         where T: AsyncFileBuilderTrait;
 

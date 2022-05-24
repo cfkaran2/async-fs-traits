@@ -16,8 +16,9 @@ pub trait AsyncDirBuilderTrait:
 {
     /// Creates a blank set of options.
     ///
-    /// The [`recursive()`][`AsyncDirBuilderTrait::recursive()`] option is
-    /// initially set to `false`.
+    /// The [`recursive()`][1] option is initially set to `false`.
+    ///
+    /// [1]: `AsyncDirBuilderTrait::recursive()`
     async fn new<T>() -> T
         where T: AsyncDirBuilderTrait;
 

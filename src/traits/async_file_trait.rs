@@ -30,15 +30,15 @@ use async_trait::async_trait;
 ///
 /// Depending on what options the file was opened with, this type can be used
 /// for reading and/or writing.  Files should be created or opened using a type
-/// that implements the[`AsyncFileBuilderTrait`][1].
+/// that implements the [`AsyncFileBuilderTrait`][1].
 ///
 /// Files are automatically closed when they get dropped and any errors detected
-/// on closing are ignored. Use the[`sync_all()`][2] method before dropping a
+/// on closing are ignored. Use the [`sync_all()`][2] method before dropping a
 /// file if such errors need to be handled.
 ///
 /// **NOTE:** If writing to a file, make sure to call [`sync_data()`][3], or
-/// [`sync_all()`][2] before dropping the file or else some written data might
-/// get lost!
+/// [`sync_all()`][2] methods before dropping the file or else some written data
+/// might get lost!
 ///
 /// [1]: super::AsyncFileBuilderTrait
 /// [2]: self::AsyncFileTrait::sync_all()

@@ -11,11 +11,12 @@ use super::Stream;
 
 /// A stream of entries in a directory.
 ///
-/// This stream is returned by
-/// [`read_dir()`][super::AsyncFsTrait::read_dir] and yields
-/// items of type [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Each
-/// [`super::AsyncDirEntryTrait`] can
-/// then retrieve information like entry's path or metadata.
+/// This stream is returned by[`read_dir()`][1] and yields items of type
+/// [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Each
+/// [`super::AsyncDirEntryTrait`] can then retrieve information like entry's
+/// path or metadata.
+///
+/// [1]: super::AsyncFsTrait::read_dir
 #[async_trait]
 pub trait AsyncReadDirTrait<T>:
     std::fmt::Debug + Stream<Item = io::Result<T>>
