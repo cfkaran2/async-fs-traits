@@ -20,7 +20,10 @@
 //! [1]: https://crates.io/crates/tower
 //! [2]: https://docs.rs/tower/latest/tower/trait.Service.html
 
-#![warn(missing_docs, missing_debug_implementations, rust_2018_idioms)]
+#![warn(missing_docs,
+        missing_debug_implementations,
+        rust_2018_idioms,
+        rustdoc::missing_crate_level_docs)]
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
