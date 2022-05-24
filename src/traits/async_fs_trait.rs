@@ -1,4 +1,11 @@
-//! TODO: Fill this in
+//! [`AsyncFsTrait`] is a trait for file systems as a whole.
+//!
+//! There are objects that can be viewed as file systems that are not normally
+//! considered to be file systems.  Simple examples include things such as
+//! archive and trees.  For this reason, this crate provides the
+//! [`AsyncFsTrait`] trait, which defines a set of associated functions that
+//! would normally be free functions.  See the documentation for each to
+//! understand what they do.
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
@@ -13,7 +20,14 @@ use async_trait::async_trait;
 use super::AsyncDirEntryTrait;
 use super::AsyncReadDirTrait;
 
-/// TODO: Fill this in
+/// [`AsyncFsTrait`] is a trait for file systems as a whole.
+///
+/// There are objects that can be viewed as file systems that are not normally
+/// considered to be file systems.  Simple examples include things such as
+/// archive and trees.  For this reason, this crate provides the
+/// [`AsyncFsTrait`] trait, which defines a set of associated functions that
+/// would normally be free functions.  See the documentation for each to
+/// understand what they do.
 #[async_trait]
 pub trait AsyncFsTrait {
     /// Returns the canonical form of a path.

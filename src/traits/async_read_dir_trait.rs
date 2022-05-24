@@ -1,4 +1,11 @@
-//! TODO: Fill this in
+//! A stream of entries in a directory.
+//!
+//! This stream is returned by[`read_dir()`][1] and yields items of type
+//! [`io::Result`]`<`[`AsyncDirEntryTrait`]`>`. Each
+//! [`super::AsyncDirEntryTrait`] can then retrieve information like entry's
+//! path or metadata.
+//!
+//! [1]: super::AsyncFsTrait::read_dir
 
 pub use std::fs::{FileType, Metadata, Permissions};
 use std::io;

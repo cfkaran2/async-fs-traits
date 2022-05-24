@@ -29,9 +29,6 @@
 pub use std::fs::{FileType, Metadata, Permissions};
 
 pub mod traits;
-pub use traits::*;
-
-
 #[doc(no_inline)]
 pub use std::io::{Error, ErrorKind, IoSlice, IoSliceMut, Result, SeekFrom};
 
@@ -53,6 +50,7 @@ pub use async_sym_link_trait::AsyncSymLinkTrait;
 pub use futures_core::stream::Stream;
 #[doc(no_inline)]
 pub use futures_io::{AsyncBufRead, AsyncRead, AsyncSeek, AsyncWrite};
+pub use traits::*;
 
 //  ▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄    ▄▄▄▄    ▄▄▄▄▄▄▄▄    ▄▄▄▄
 //  ▀▀▀██▀▀▀  ██▀▀▀▀▀▀  ▄█▀▀▀▀█   ▀▀▀██▀▀▀  ▄█▀▀▀▀█

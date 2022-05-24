@@ -1,4 +1,12 @@
-//! TODO: Fill this in
+//! [`AsyncFileBuilderTrait`] objects create or open [`AsyncFileTrait`] objects.
+//!
+//! In order to use a [`AsyncFileTrait`] object, you first need to either create
+//! it or open.  Further, you need to decide if you're going to open it with the
+//! ability to read or write (or both), and a bunch of other options.  The
+//! [`AsyncFileBuilderTrait`] is used to set all of the options, and then to
+//! open the [`AsyncFileTrait`] for you.  The [`AsyncFileBuilderTrait`] is
+//! expected to follow the standard rust builder idioms, providing sensible
+//! defaults, and catching bad combinations of options.
 
 pub use std::fs::{FileType, Metadata, Permissions};
 use std::{future::Future, io, path::Path};

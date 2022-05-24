@@ -1,4 +1,13 @@
-//! TODO: Fill this in
+//! [`AsyncDirEntryTrait`] represents an entry in the filesystem.
+//!
+//! Objects in the filesystem may be files, directories, or other special
+//! such as symlinks, FIFOs, or anything else that the given filesystem is able
+//! to represent.  [`AsyncDirEntryTrait`] implementors don't give you direct
+//! access to the underlying object, instead they give you some relatively
+//! lightweight metadata about the objects that are encountered.  Note the
+//! 'lightweight' part of the earlier sentence as that is the real reason they
+//! exist; they are intended to be returned by iterators *quickly* and
+//! *cheaply*.  Keep this in mind when implementing this trait.
 
 #[doc(no_inline)]
 pub use std::fs::{FileType, Metadata, Permissions};
